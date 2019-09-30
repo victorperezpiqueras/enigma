@@ -12,14 +12,15 @@ import java.util.ArrayList;
  * @author vikti
  */
 public class Key {
+
     private ArrayList<Rotor> rotors = new ArrayList();
     private Rotor reflector;
     private char[] startingPos = new char[3];
-    
-    public Key(ArrayList<Rotor> rotors, Rotor reflector, char[] startingPos){
+
+    public Key(ArrayList<Rotor> rotors, Rotor reflector, char[] startingPos) {
         this.rotors = rotors;
         this.reflector = reflector;
-        this.startingPos=startingPos;
+        this.startingPos = startingPos;
     }
 
     public Rotor getReflector() {
@@ -29,8 +30,6 @@ public class Key {
     public void setReflector(Rotor reflector) {
         this.reflector = reflector;
     }
-
-    
 
     public ArrayList<Rotor> getRotors() {
         return rotors;
@@ -47,6 +46,5 @@ public class Key {
     public void setStartingPos(char[] startingPos) {
         this.startingPos = startingPos;
     }
-    
-    
+
 }

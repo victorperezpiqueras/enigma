@@ -17,12 +17,14 @@ public class Rotor {
     private ArrayList<Character> code = new ArrayList(26);
     private int offset = 0;
     private Rotor leftRotor;
+    private int notch;
 
-    public Rotor(String type, ArrayList<Character> code, Rotor rotor) {
+    public Rotor(String type, ArrayList<Character> code, Rotor rotor, int notch) {
         this.code = code;
         this.type = type;
         this.offset = 0;
         this.leftRotor = rotor;
+        this.notch = notch;
     }
 
     public char transformLetter(char letter) {
@@ -30,20 +32,15 @@ public class Rotor {
         for (char c : "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray()) {
             input.add(c);
         }
-        
+
         //if not reflector->
         if (!this.type.contains("reflector")) {
-            //if max offset and has left rotor->notify left rotor to change
-            if (this.offset == 25 && this.leftRotor != null) {
-                this.notifyRotor();
-            }
-            //increment offset
-            this.offset = (this.offset + 1) % 26;
+            this.incrementOffset();
         }
 
         //get index of the ABCD and add the offset
-        int index = input.indexOf(letter) + this.offset;
-        
+        int index = (input.indexOf(letter) + this.offset) % 26;
+
         //get the letter of the index in the Rotor code
         char newLetter = this.code.get(index);
 
@@ -51,7 +48,16 @@ public class Rotor {
     }
 
     public void notifyRotor() {
-        this.leftRotor.offset = (this.leftRotor.offset + 1) % 26;
+        this.leftRotor.incrementOffset();
+    }
+
+    public void incrementOffset() {
+        //if max offset and has left rotor->notify left rotor to change
+        if (this.offset == this.notch && this.leftRotor != null) {
+            this.notifyRotor();
+        }
+        //increment offset
+        this.offset = (this.offset + 1) % 26;
     }
 
     public Rotor getLeftRotor() {

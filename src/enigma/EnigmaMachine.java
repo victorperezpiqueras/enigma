@@ -24,12 +24,12 @@ public class EnigmaMachine {
 
     }
 
-    public Rotor generateRotor(String type, String encoding, Rotor leftRotor) {
+    public Rotor generateRotor(String type, String encoding, Rotor leftRotor, int notch) {
         ArrayList<Character> chars = new ArrayList<Character>();
         for (char c : encoding.toCharArray()) {
             chars.add(c);
         }
-        Rotor rotor = new Rotor(type, chars, leftRotor);
+        Rotor rotor = new Rotor(type, chars, leftRotor, notch);
         return rotor;
     }
 

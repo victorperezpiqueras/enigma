@@ -30,9 +30,9 @@ public class RotorTest {
     @Before
     public void setUp() {
         em = new EnigmaMachine();
-        r1 = em.generateRotor("1", "EKMFLGDQVZNTOWYHXUSPAIBRCJ", null);
-        r2 = em.generateRotor("2", "AJDKSIRUXBLHWTMCQGZNPYFVOE", r1);
-        r3 = em.generateRotor("3", "BDFHJLCPRTXVZNYEIWGAKMUSQO", r2);
+        r1 = em.generateRotor("1", "EKMFLGDQVZNTOWYHXUSPAIBRCJ", null, 17);
+        r2 = em.generateRotor("2", "AJDKSIRUXBLHWTMCQGZNPYFVOE", r1, 5);
+        r3 = em.generateRotor("3", "BDFHJLCPRTXVZNYEIWGAKMUSQO", r2, 22);
     }
 
     @After
@@ -55,9 +55,9 @@ public class RotorTest {
         System.out.println("Actual output is: " + output);
         System.out.println("Expected is : " + expectedOutput);
         assertEquals(output, expectedOutput);
-        
+
         System.out.println("2º:");
-        
+
         //check second output is the second letter:
         output = r3.transformLetter(input);
         expectedOutput = 'D';
@@ -65,18 +65,17 @@ public class RotorTest {
         System.out.println("Expected is : " + expectedOutput);
         assertEquals(output, expectedOutput);
     }
-    
-     @Test
-    public void checkNotify() {
+
+    @Test
+    public void notifyRotor() {
         //System.out.println("-----------------");
         int initialOffset = r1.getOffset();
         r2.notifyRotor();
         int finalOffset = r1.getOffset();
         //System.out.println("initialOffset: " + initialOffset);
         //System.out.println("finalOffset: " + finalOffset);
-        assertEquals( (initialOffset + 1)%26, finalOffset);
+        assertEquals((initialOffset + 1) % 26, finalOffset);
     }
-    
 
     @Test
     public void checkOffsetChanged() {
@@ -87,7 +86,7 @@ public class RotorTest {
             r2.transformLetter(input);
         }
         int finalOffset = r1.getOffset();
-        
+
         //System.out.println("initialOffset: " + initialOffset);
         //System.out.println("finalOffset: " + finalOffset);
         assertEquals(initialOffset + 1, finalOffset);
