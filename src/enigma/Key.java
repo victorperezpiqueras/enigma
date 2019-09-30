@@ -13,12 +13,24 @@ import java.util.ArrayList;
  */
 public class Key {
     private ArrayList<Rotor> rotors = new ArrayList();
+    private Rotor reflector;
     private char[] startingPos = new char[3];
     
-    public Key(ArrayList<Rotor> rotors, char[] startingPos){
+    public Key(ArrayList<Rotor> rotors, Rotor reflector, char[] startingPos){
         this.rotors = rotors;
+        this.reflector = reflector;
         this.startingPos=startingPos;
     }
+
+    public Rotor getReflector() {
+        return reflector;
+    }
+
+    public void setReflector(Rotor reflector) {
+        this.reflector = reflector;
+    }
+
+    
 
     public ArrayList<Rotor> getRotors() {
         return rotors;

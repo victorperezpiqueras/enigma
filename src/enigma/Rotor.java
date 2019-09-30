@@ -15,14 +15,54 @@ public class Rotor {
 
     private String type;
     private ArrayList<Character> code = new ArrayList(26);
-    private int offset;
+    private int offset = 0;
+    private Rotor leftRotor;
 
-    public Rotor(String type, ArrayList<Character> code) {
+    public Rotor(String type, ArrayList<Character> code, Rotor rotor) {
         this.code = code;
         this.type = type;
         this.offset = 0;
+        this.leftRotor = rotor;
     }
 
+    public char transformLetter(char letter) {
+        ArrayList<Character> input = new ArrayList<Character>();
+        for (char c : "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray()) {
+            input.add(c);
+        }
+        
+        //if not reflector->
+        if (!this.type.contains("reflector")) {
+            //if max offset and has left rotor->notify left rotor to change
+            if (this.offset == 25 && this.leftRotor != null) {
+                this.notifyRotor();
+            }
+            //increment offset
+            this.offset = (this.offset + 1) % 26;
+        }
+
+        //get index of the ABCD and add the offset
+        int index = input.indexOf(letter) + this.offset;
+        
+        //get the letter of the index in the Rotor code
+        char newLetter = this.code.get(index);
+
+        return newLetter;
+    }
+
+    public void notifyRotor() {
+        this.leftRotor.offset = (this.leftRotor.offset + 1) % 26;
+    }
+
+    public Rotor getLeftRotor() {
+        return leftRotor;
+    }
+
+    public void setLeftRotor(Rotor leftRotor) {
+        this.leftRotor = leftRotor;
+    }
+
+    //GETTERS AND SETTERS:
     public String getType() {
         return type;
     }
