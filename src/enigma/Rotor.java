@@ -18,6 +18,7 @@ public class Rotor {
     private int offset = 0;
     private Rotor leftRotor;
     private int notch;
+    private ArrayList<Character> abcd = new ArrayList<Character>();
 
     public Rotor(String type, ArrayList<Character> code, Rotor rotor, int notch) {
         this.code = code;
@@ -25,39 +26,55 @@ public class Rotor {
         this.offset = 0;
         this.leftRotor = rotor;
         this.notch = notch;
+        
+        for (char c : "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray()) {
+            this.abcd.add(c);
+        }
+        
     }
 
-    public char transformLetter(char letter) {
-        ArrayList<Character> input = new ArrayList<Character>();
-        for (char c : "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray()) {
-            input.add(c);
-        }
+    public char transformLetter(char letter, String mode) {
 
         //if not reflector->
-        if (!this.type.contains("reflector")) {
+        if (!this.type.contains("reflector") && mode.contains("in")) {
             this.incrementOffset();
         }
 
-        //get index of the ABCD and add the offset
-        int index = (input.indexOf(letter) + this.offset) % 26;
-
-        //get the letter of the index in the Rotor code
-        char newLetter = this.code.get(index);
+        int index;
+        char newLetter;
+        //mode input
+        if(mode.contains("in")){
+          //get index of the ABCD and add the offset-->find letter in the table
+          index = (this.abcd.indexOf(letter) + this.offset) % 26;
+          //get the letter of the index in the Rotor code
+          newLetter = this.code.get(index);
+        }
+        //mode output
+        else {
+          index = (this.code.indexOf(letter) + this.offset) % 26;
+          //get the letter of the abcd in the Rotor code
+          newLetter = this.abcd.get(index);
+        }
 
         return newLetter;
     }
-
+/*
     public void notifyRotor() {
-        this.leftRotor.incrementOffset();
+        
     }
-
-    public void incrementOffset() {
+*/
+    public void incrementOffset() {/////////////before or after notify the next rotor, which should turn first
+        //increment offset
+        if(this.type.contains("3")){
+            this.offset = (this.offset + 1) % 26;
+        }
+        
         //if max offset and has left rotor->notify left rotor to change
         if (this.offset == this.notch && this.leftRotor != null) {
-            this.notifyRotor();
+            this.leftRotor.offset = (this.leftRotor.offset + 1) % 26;
+            //this.notifyRotor();
         }
-        //increment offset
-        this.offset = (this.offset + 1) % 26;
+        
     }
 
     public Rotor getLeftRotor() {
@@ -91,6 +108,14 @@ public class Rotor {
 
     public void setOffset(int offset) {
         this.offset = offset;
+    }
+
+    public int getNotch() {
+        return notch;
+    }
+
+    public void setNotch(int notch) {
+        this.notch = notch;
     }
 
 }

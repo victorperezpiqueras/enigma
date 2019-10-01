@@ -68,42 +68,85 @@ public class EnigmaMachineTest {
         char result = 'A';
         r3.setOffset(25);
 
-        result = this.r3.transformLetter(result);
-        System.out.println("Expected is : " + 'B');
-        System.out.println("Actual output is: " + result);
+        result = this.r3.transformLetter(result, "in");
+        System.out.println("["+'B'+"] found: "+result);
         assertEquals(result, 'B');
+        
+        result = this.r2.transformLetter(result, "in");
+        System.out.println("["+'J'+"] found: "+result); 
+        assertEquals(result, 'J');
+        
+        result = this.r1.transformLetter(result, "in");
+        System.out.println("["+'Z'+"] found: "+result);
+        assertEquals(result, 'Z');
+        
+        //
+        result = this.reflector.transformLetter(result, "");
+        System.out.println("["+'T'+"] found: "+result);
+        assertEquals(result, 'T');
+        //
+        
+        result = this.r1.transformLetter(result, "out");
+        System.out.println("["+'L'+"] found: "+result);
+        assertEquals(result, 'L');
+        
+        result = this.r2.transformLetter(result, "out");
+        System.out.println("["+'K'+"] found: "+result);
+        assertEquals(result, 'K');
+        
+        result = this.r3.transformLetter(result, "out");
+        System.out.println("["+'U'+"] found: "+result);
+        assertEquals(result, 'U');
+        
+        
+        System.out.println("IT2========");
+        
+        result = 'A';
+        
+        result = this.r3.transformLetter(result, "in");
+        System.out.println("["+'D'+"] found: "+result);
+        assertEquals(result, 'D');
+        
+        result = this.r2.transformLetter(result, "in");
+        System.out.println("["+'D'+"] found: "+result); //parece un fallo de haber saltado un indice de mas
+        assertEquals(result, 'D');
+        
+        result = this.r1.transformLetter(result, "in");
+        System.out.println("["+'F'+"] found: "+result);
+        assertEquals(result, 'F');
+        
+        //
+        result = this.reflector.transformLetter(result, "");
+        System.out.println("["+'S'+"] found: "+result);
+        assertEquals(result, 'S');
+        //
+        
+        result = this.r1.transformLetter(result, "out");
+        System.out.println("["+'S'+"] found: "+result);
+        assertEquals(result, 'S');
+        
+        result = this.r2.transformLetter(result, "out");
+        System.out.println("["+'E'+"] found: "+result);
+        assertEquals(result, 'E');
+        
+        result = this.r3.transformLetter(result, "out");
+        System.out.println("["+'C'+"] found: "+result);
+        assertEquals(result, 'C');
+        
+        //AQUI FALTA TRANSFORMAR LA C A LA POSICION DEL OFFSET:(1) QUE SERÍA B->A 'B' C-0 '1' 2 Y DEVOLVER LA B
+    }
+    
+    /*
+    @Test
+    public void transformChar2() {
+        char result = 'B';
+        r3.setOffset(25);
         
         result = this.r2.transformLetter(result);
         System.out.println("Expected is : " + 'J');
         System.out.println("Actual output is: " + result);
         assertEquals(result, 'J');
-        
-        result = this.r1.transformLetter(result);
-        System.out.println("Expected is : " + 'Z');
-        System.out.println("Actual output is: " + result);
-        assertEquals(result, 'Z');
-        
-        //
-        result = this.reflector.transformLetter(result);
-        System.out.println("Expected is : " + 'Z');
-        System.out.println("Actual output is: " + result);
-        assertEquals(result, 'T');
-        //
-        
-        result = this.r1.transformLetter(result);
-        System.out.println("Expected is : " + 'L');
-        System.out.println("Actual output is: " + result);
-        assertEquals(result, 'L');
-        
-        result = this.r2.transformLetter(result);
-        System.out.println("Expected is : " + 'K');
-        System.out.println("Actual output is: " + result);
-        assertEquals(result, 'K');
-        
-        result = this.r3.transformLetter(result);
-        System.out.println("Expected is : " + 'U');
-        System.out.println("Actual output is: " + result);
-        assertEquals(result, 'U');
     }
-
+*/
+    
 }

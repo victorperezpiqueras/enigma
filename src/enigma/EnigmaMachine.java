@@ -74,14 +74,14 @@ public class EnigmaMachine {
 
     public char transformChar(char c) {
         char result = c;
-        result = this.rightRotor.transformLetter(result);
-        result = this.centerRotor.transformLetter(result);
-        result = this.leftRotor.transformLetter(result);
-        result = this.reflector.transformLetter(result);
+        result = this.rightRotor.transformLetter(result, "in");
+        result = this.centerRotor.transformLetter(result, "in");
+        result = this.leftRotor.transformLetter(result, "in");
+        result = this.reflector.transformLetter(result, "");
 
-        result = this.leftRotor.transformLetter(result);
-        result = this.centerRotor.transformLetter(result);
-        result = this.rightRotor.transformLetter(result);
+        result = this.leftRotor.transformLetter(result, "out");
+        result = this.centerRotor.transformLetter(result, "out");
+        result = this.rightRotor.transformLetter(result, "out");
 
         return result;
     }

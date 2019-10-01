@@ -35,43 +35,42 @@ public class RotorTest {
         r3 = em.generateRotor("3", "BDFHJLCPRTXVZNYEIWGAKMUSQO", r2, 22);
     }
 
-    @After
-    public void tearDown() {
-    }
-
     @Test
     public void transformLetter() {
-        System.out.println("-----------------");
+        //System.out.println("-----------------");
         char input = 'A';
         r3.setOffset(25);
         int oldOffset = r3.getOffset();
-        char output = r3.transformLetter(input);
+        char output = r3.transformLetter(input, "in");
 
         //check offset changed
         assertEquals(r3.getOffset(), (oldOffset + 1) % 26);
 
         //check output is the expected:
         char expectedOutput = 'B';
-        System.out.println("Actual output is: " + output);
-        System.out.println("Expected is : " + expectedOutput);
+        //System.out.println("Actual output is: " + output);
+        //System.out.println("Expected is : " + expectedOutput);
         assertEquals(output, expectedOutput);
 
         System.out.println("2º:");
 
         //check second output is the second letter:
-        output = r3.transformLetter(input);
+        output = r3.transformLetter(input, "in");
         expectedOutput = 'D';
-        System.out.println("Actual output is: " + output);
-        System.out.println("Expected is : " + expectedOutput);
+        //System.out.println("Actual output is: " + output);
+        //System.out.println("Expected is : " + expectedOutput);
         assertEquals(output, expectedOutput);
     }
 
     @Test
-    public void notifyRotor() {
+    public void incrementNextRotor() {
         //System.out.println("-----------------");
-        int initialOffset = r1.getOffset();
-        r2.notifyRotor();
-        int finalOffset = r1.getOffset();
+        r3.setNotch(1);
+        r3.setOffset(0);
+        r2.setOffset(0);
+        int initialOffset = r2.getOffset();
+        r3.incrementOffset();
+        int finalOffset = r2.getOffset();
         //System.out.println("initialOffset: " + initialOffset);
         //System.out.println("finalOffset: " + finalOffset);
         assertEquals((initialOffset + 1) % 26, finalOffset);
@@ -80,12 +79,12 @@ public class RotorTest {
     @Test
     public void checkOffsetChanged() {
         //System.out.println("-----------------");
-        int initialOffset = r1.getOffset();
+        int initialOffset = r2.getOffset();
         char input = 'A';
         for (int i = 0; i < 27; i++) {
-            r2.transformLetter(input);
+            r3.transformLetter(input, "in");
         }
-        int finalOffset = r1.getOffset();
+        int finalOffset = r2.getOffset();
 
         //System.out.println("initialOffset: " + initialOffset);
         //System.out.println("finalOffset: " + finalOffset);
