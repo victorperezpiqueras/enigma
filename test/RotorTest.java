@@ -6,6 +6,7 @@
 
 import enigma.EnigmaMachine;
 import enigma.Rotor;
+import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -23,8 +24,10 @@ public class RotorTest {
     Rotor r1;
     Rotor r2;
     Rotor r3;
+    private ArrayList<Character> abcd = new ArrayList<Character>();
 
     public RotorTest() {
+
     }
 
     @Before
@@ -33,6 +36,9 @@ public class RotorTest {
         r1 = em.generateRotor("1", "EKMFLGDQVZNTOWYHXUSPAIBRCJ", null, 17);
         r2 = em.generateRotor("2", "AJDKSIRUXBLHWTMCQGZNPYFVOE", r1, 5);
         r3 = em.generateRotor("3", "BDFHJLCPRTXVZNYEIWGAKMUSQO", r2, 22);
+        for (char c : "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray()) {
+            this.abcd.add(c);
+        }
     }
 
     @Test
@@ -41,22 +47,14 @@ public class RotorTest {
         char input = 'A';
         r3.setOffset(25);
         int oldOffset = r3.getOffset();
-        char output = r3.transformLetter(input, "in");
+        int outputIndex = r3.transformLetter(0, "in");
+        int output = this.abcd.get(outputIndex);
 
         //check offset changed
         assertEquals(r3.getOffset(), (oldOffset + 1) % 26);
 
         //check output is the expected:
         char expectedOutput = 'B';
-        //System.out.println("Actual output is: " + output);
-        //System.out.println("Expected is : " + expectedOutput);
-        assertEquals(output, expectedOutput);
-
-        //System.out.println("2º:");
-
-        //check second output is the second letter:
-        output = r3.transformLetter(input, "in");
-        expectedOutput = 'D';
         //System.out.println("Actual output is: " + output);
         //System.out.println("Expected is : " + expectedOutput);
         assertEquals(output, expectedOutput);
@@ -80,9 +78,8 @@ public class RotorTest {
     public void checkOffsetChanged() {
         //System.out.println("-----------------");
         int initialOffset = r2.getOffset();
-        char input = 'A';
         for (int i = 0; i < 27; i++) {
-            r3.transformLetter(input, "in");
+            r3.transformLetter(0, "in");
         }
         int finalOffset = r2.getOffset();
 
@@ -98,9 +95,8 @@ public class RotorTest {
         r3.setOffset(0);
         int initialOffset = r2.getOffset();
         r3.setNotch(1);
-        char input = 'A';
 
-        r3.transformLetter(input, "in");
+        r3.transformLetter(0, "in");
         
         int finalOffset = r2.getOffset();
 

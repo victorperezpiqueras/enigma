@@ -35,7 +35,7 @@ public class Enigma {
         rotorsConfig.add(r3);
         
         //default starting positions:
-        char[] startingPos = {'A', 'A', 'X'};
+        char[] startingPos = {'Z', 'A', 'A'};
         
         //CREATE KEY:
         Key key = new Key(rotorsConfig, reflector, startingPos);

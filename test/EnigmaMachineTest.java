@@ -54,7 +54,7 @@ public class EnigmaMachineTest {
         
         this.em.configurateKey(key);
         String result = em.enigma(key, "A");
-        assertEquals(result,"B");
+        assertEquals(result,"Z");
     }
     
     @Test
@@ -67,9 +67,20 @@ public class EnigmaMachineTest {
         this.em.configurateKey(key);
         String result = em.enigma(key, "A");
         assertEquals(result,"U");
-        
         result = em.enigma(key, "U");
         assertEquals(result,"A");
+    }
+    
+    @Test
+    public void test3(){
+        //default starting positions:
+        char[] startingPos = {'Z', 'A', 'A'};
+        //CREATE KEY:
+        Key key = new Key(this.rotorsConfig, reflector, startingPos);
+        
+        this.em.configurateKey(key);
+        String result = em.enigma(key, "ABCDEFFFF");
+        assertEquals(result,"ZKFBIWHUH");
     }
 
     @Test
@@ -89,119 +100,6 @@ public class EnigmaMachineTest {
         assertEquals(r1.getOffset(), 25);
         assertEquals(r2.getOffset(), 0);
         assertEquals(r3.getOffset(), 25);
-    }
-
-    @Test
-    public void transformCharA2UandU2A() {
-        //default starting positions:
-        char[] startingPos = {'A', 'A', 'Z'};
-        //CREATE KEY:
-        Key key = new Key(this.rotorsConfig, reflector, startingPos);
-
-        this.em.configurateKey(key);
-        
-        char result = 'A';
-        r3.setOffset(25);
-
-        result = this.r3.transformLetter(result, "in");
-        //System.out.println("["+'B'+"] found: "+result);
-        assertEquals(result, 'B');
-        
-        result = this.r2.transformLetter(result, "in");
-        //System.out.println("["+'J'+"] found: "+result); 
-        assertEquals(result, 'J');
-        
-        result = this.r1.transformLetter(result, "in");
-        //System.out.println("["+'Z'+"] found: "+result);
-        assertEquals(result, 'Z');
-        
-        //
-        result = this.reflector.transformLetter(result, "");
-        //System.out.println("["+'T'+"] found: "+result);
-        assertEquals(result, 'T');
-        //
-        
-        result = this.r1.transformLetter(result, "out");
-        //System.out.println("["+'L'+"] found: "+result);
-        assertEquals(result, 'L');
-        
-        result = this.r2.transformLetter(result, "out");
-        //System.out.println("["+'K'+"] found: "+result);
-        assertEquals(result, 'K');
-        
-        result = this.r3.transformLetter(result, "out");
-        //System.out.println("["+'U'+"] found: "+result);
-        assertEquals(result, 'U');
-        //////////////////////////////opposite
-        result = 'U';
-        r3.setOffset(25);
-
-        result = this.r3.transformLetter(result, "in");
-        //System.out.println("["+'B'+"] found: "+result);
-        assertEquals(result, 'K');
-        
-        result = this.r2.transformLetter(result, "in");
-        //System.out.println("["+'J'+"] found: "+result); 
-        assertEquals(result, 'L');
-        
-        result = this.r1.transformLetter(result, "in");
-        //System.out.println("["+'Z'+"] found: "+result);
-        assertEquals(result, 'T');
-        
-        //
-        result = this.reflector.transformLetter(result, "");
-        //System.out.println("["+'T'+"] found: "+result);
-        assertEquals(result, 'Z');
-        //
-        
-        result = this.r1.transformLetter(result, "out");
-        //System.out.println("["+'L'+"] found: "+result);
-        assertEquals(result, 'J');
-        
-        result = this.r2.transformLetter(result, "out");
-        //System.out.println("["+'K'+"] found: "+result);
-        assertEquals(result, 'B');
-        
-        result = this.r3.transformLetter(result, "out");
-        //System.out.println("["+'U'+"] found: "+result);
-        assertEquals(result, 'A');
-        /*
-        System.out.println("IT2========");
-        
-        result = 'A';
-        
-        result = this.r3.transformLetter(result, "in");
-        System.out.println("["+'D'+"] found: "+result);
-        assertEquals(result, 'D');
-        
-        result = this.r2.transformLetter(result, "in");
-        System.out.println("["+'D'+"] found: "+result); //parece un fallo de haber saltado un indice de mas
-        assertEquals(result, 'D');
-        
-        result = this.r1.transformLetter(result, "in");
-        System.out.println("["+'F'+"] found: "+result);
-        assertEquals(result, 'F');
-        
-        //
-        result = this.reflector.transformLetter(result, "");
-        System.out.println("["+'S'+"] found: "+result);
-        assertEquals(result, 'S');
-        //
-        
-        result = this.r1.transformLetter(result, "out");
-        System.out.println("["+'S'+"] found: "+result);
-        assertEquals(result, 'S');
-        
-        result = this.r2.transformLetter(result, "out");
-        System.out.println("["+'E'+"] found: "+result);
-        assertEquals(result, 'E');
-        
-        result = this.r3.transformLetter(result, "out");
-        System.out.println("["+'C'+"] found: "+result);
-        assertEquals(result, 'C');
-        */
-        //AQUI FALTA TRANSFORMAR LA C A LA POSICION DEL OFFSET:(1) QUE SERÍA B->A 'B' C-0 '1' 2 Y DEVOLVER LA B
-
     }
     
 }
