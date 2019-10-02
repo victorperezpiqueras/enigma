@@ -33,7 +33,7 @@ public class Rotor {
         
     }
 
-    public char transformLetter(char letter, String mode) {
+    public int transformLetter(int indexLetter, String mode) {
 
         //if not reflector->
         if (!this.type.contains("reflector") && mode.contains("in")) {
@@ -42,21 +42,29 @@ public class Rotor {
 
         int index;
         char newLetter;
+        int newIndex;
         //mode input
         if(mode.contains("in")){
           //get index of the ABCD and add the offset-->find letter in the table
-          index = (this.abcd.indexOf(letter) + this.offset) % 26;
+          //index = (this.abcd.indexOf(letter) + this.offset) % 26;
+          index = ( indexLetter+this.getOffset() )%26;
           //get the letter of the index in the Rotor code
           newLetter = this.code.get(index);
-        }
+          newIndex = this.abcd.indexOf(newLetter)+(26-this.getOffset());
+        }//AAY,Z-->17(q) = 16 + ( 26-25(index) ) 
         //mode output
         else {
-          index = (this.code.indexOf(letter) + this.offset) % 26;
-          //get the letter of the abcd in the Rotor code
+          //index = (this.code.indexOf(letter) + this.offset) % 26;
+          index = ( indexLetter+this.getOffset() )%26;  //obtenemos la letra en la misma posicion
           newLetter = this.abcd.get(index);
+          //get the letter of the abcd in the Rotor code
+          newIndex = this.code.indexOf(newLetter);
+          //newLetter = this.abcd.get(index);
+          newLetter = this.abcd.get(newIndex);
+          newIndex = this.abcd.indexOf(newLetter)+(26-this.getOffset());
         }
 
-        return newLetter;
+        return newIndex%26;
     }
 /*
     public void notifyRotor() {

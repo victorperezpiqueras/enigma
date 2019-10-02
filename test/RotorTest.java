@@ -52,7 +52,7 @@ public class RotorTest {
         //System.out.println("Expected is : " + expectedOutput);
         assertEquals(output, expectedOutput);
 
-        System.out.println("2º:");
+        //System.out.println("2º:");
 
         //check second output is the second letter:
         output = r3.transformLetter(input, "in");
@@ -84,6 +84,24 @@ public class RotorTest {
         for (int i = 0; i < 27; i++) {
             r3.transformLetter(input, "in");
         }
+        int finalOffset = r2.getOffset();
+
+        //System.out.println("initialOffset: " + initialOffset);
+        //System.out.println("finalOffset: " + finalOffset);
+        assertEquals(initialOffset + 1, finalOffset);
+
+    }
+    
+    @Test
+    public void checkNotchWorks() {
+        //System.out.println("-----------------");
+        r3.setOffset(0);
+        int initialOffset = r2.getOffset();
+        r3.setNotch(1);
+        char input = 'A';
+
+        r3.transformLetter(input, "in");
+        
         int finalOffset = r2.getOffset();
 
         //System.out.println("initialOffset: " + initialOffset);

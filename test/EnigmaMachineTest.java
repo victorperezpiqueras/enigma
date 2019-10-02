@@ -26,6 +26,7 @@ public class EnigmaMachineTest {
     Rotor r2;
     Rotor r3;
     Rotor reflector;
+    ArrayList<Rotor> rotorsConfig = new ArrayList();
 
     public EnigmaMachineTest() {
     }
@@ -37,68 +38,134 @@ public class EnigmaMachineTest {
         r2 = em.generateRotor("2", "AJDKSIRUXBLHWTMCQGZNPYFVOE", r1, 5);
         r3 = em.generateRotor("3", "BDFHJLCPRTXVZNYEIWGAKMUSQO", r2, 22);
         reflector = em.generateRotor("reflector", "YRUHQSLDPXNGOKMIEBFZCWVJAT", null, 0);
+        
+        this.rotorsConfig.add(r1);
+        this.rotorsConfig.add(r2);
+        this.rotorsConfig.add(r3);
+       
     }
-
-    @After
-    public void tearDown() {
+    
+    @Test
+    public void test1(){
+        //default starting positions:
+        char[] startingPos = {'Z', 'A', 'A'};
+        //CREATE KEY:
+        Key key = new Key(this.rotorsConfig, reflector, startingPos);
+        
+        this.em.configurateKey(key);
+        String result = em.enigma(key, "A");
+        assertEquals(result,"B");
+    }
+    
+    @Test
+    public void test2(){
+        //default starting positions:
+        char[] startingPos = {'A', 'A', 'Z'};
+        //CREATE KEY:
+        Key key = new Key(this.rotorsConfig, reflector, startingPos);
+        
+        this.em.configurateKey(key);
+        String result = em.enigma(key, "A");
+        assertEquals(result,"U");
+        
+        result = em.enigma(key, "U");
+        assertEquals(result,"A");
     }
 
     @Test
-    public void configurateKey() {
-        //System.out.println("-----------------");
-        ArrayList<Rotor> rotorsConfig = new ArrayList();
+    public void configurationKeyWorks() {
+
         //default config:
-        rotorsConfig.add(r1);
-        rotorsConfig.add(r2);
-        rotorsConfig.add(r3);
+        this.rotorsConfig.add(r1);
+        this.rotorsConfig.add(r2);
+        this.rotorsConfig.add(r3);
         //default starting positions:
-        char[] startingPos = {'A', 'D', 'Z'};
+        char[] startingPos = {'Z', 'A', 'Z'};
         //CREATE KEY:
-        Key key = new Key(rotorsConfig, reflector, startingPos);
+        Key key = new Key(this.rotorsConfig, reflector, startingPos);
 
         this.em.configurateKey(key);
         //System.out.println("Expected offsets:[0,3,25]. Actual offsets:["+r1.getOffset()+"]"+"["+r2.getOffset()+"]"+"["+r3.getOffset()+"]");
-        assertEquals(r1.getOffset(), 0);
-        assertEquals(r2.getOffset(), 3);
+        assertEquals(r1.getOffset(), 25);
+        assertEquals(r2.getOffset(), 0);
         assertEquals(r3.getOffset(), 25);
     }
 
     @Test
-    public void transformChar() {
+    public void transformCharA2UandU2A() {
+        //default starting positions:
+        char[] startingPos = {'A', 'A', 'Z'};
+        //CREATE KEY:
+        Key key = new Key(this.rotorsConfig, reflector, startingPos);
+
+        this.em.configurateKey(key);
+        
         char result = 'A';
         r3.setOffset(25);
 
         result = this.r3.transformLetter(result, "in");
-        System.out.println("["+'B'+"] found: "+result);
+        //System.out.println("["+'B'+"] found: "+result);
         assertEquals(result, 'B');
         
         result = this.r2.transformLetter(result, "in");
-        System.out.println("["+'J'+"] found: "+result); 
+        //System.out.println("["+'J'+"] found: "+result); 
         assertEquals(result, 'J');
         
         result = this.r1.transformLetter(result, "in");
-        System.out.println("["+'Z'+"] found: "+result);
+        //System.out.println("["+'Z'+"] found: "+result);
         assertEquals(result, 'Z');
         
         //
         result = this.reflector.transformLetter(result, "");
-        System.out.println("["+'T'+"] found: "+result);
+        //System.out.println("["+'T'+"] found: "+result);
         assertEquals(result, 'T');
         //
         
         result = this.r1.transformLetter(result, "out");
-        System.out.println("["+'L'+"] found: "+result);
+        //System.out.println("["+'L'+"] found: "+result);
         assertEquals(result, 'L');
         
         result = this.r2.transformLetter(result, "out");
-        System.out.println("["+'K'+"] found: "+result);
+        //System.out.println("["+'K'+"] found: "+result);
         assertEquals(result, 'K');
         
         result = this.r3.transformLetter(result, "out");
-        System.out.println("["+'U'+"] found: "+result);
+        //System.out.println("["+'U'+"] found: "+result);
         assertEquals(result, 'U');
+        //////////////////////////////opposite
+        result = 'U';
+        r3.setOffset(25);
+
+        result = this.r3.transformLetter(result, "in");
+        //System.out.println("["+'B'+"] found: "+result);
+        assertEquals(result, 'K');
         
+        result = this.r2.transformLetter(result, "in");
+        //System.out.println("["+'J'+"] found: "+result); 
+        assertEquals(result, 'L');
         
+        result = this.r1.transformLetter(result, "in");
+        //System.out.println("["+'Z'+"] found: "+result);
+        assertEquals(result, 'T');
+        
+        //
+        result = this.reflector.transformLetter(result, "");
+        //System.out.println("["+'T'+"] found: "+result);
+        assertEquals(result, 'Z');
+        //
+        
+        result = this.r1.transformLetter(result, "out");
+        //System.out.println("["+'L'+"] found: "+result);
+        assertEquals(result, 'J');
+        
+        result = this.r2.transformLetter(result, "out");
+        //System.out.println("["+'K'+"] found: "+result);
+        assertEquals(result, 'B');
+        
+        result = this.r3.transformLetter(result, "out");
+        //System.out.println("["+'U'+"] found: "+result);
+        assertEquals(result, 'A');
+        /*
         System.out.println("IT2========");
         
         result = 'A';
@@ -132,21 +199,9 @@ public class EnigmaMachineTest {
         result = this.r3.transformLetter(result, "out");
         System.out.println("["+'C'+"] found: "+result);
         assertEquals(result, 'C');
-        
+        */
         //AQUI FALTA TRANSFORMAR LA C A LA POSICION DEL OFFSET:(1) QUE SERÍA B->A 'B' C-0 '1' 2 Y DEVOLVER LA B
+
     }
-    
-    /*
-    @Test
-    public void transformChar2() {
-        char result = 'B';
-        r3.setOffset(25);
-        
-        result = this.r2.transformLetter(result);
-        System.out.println("Expected is : " + 'J');
-        System.out.println("Actual output is: " + result);
-        assertEquals(result, 'J');
-    }
-*/
     
 }

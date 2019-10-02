@@ -19,8 +19,13 @@ public class EnigmaMachine {
     private Rotor leftRotor;
     private Rotor centerRotor;
     private Rotor rightRotor;
+    
+    private ArrayList<Character> abcd = new ArrayList<Character>();
 
     public EnigmaMachine() {
+        for (char c : "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray()) {
+            this.abcd.add(c);
+        }
 
     }
 
@@ -73,16 +78,20 @@ public class EnigmaMachine {
     }
 
     public char transformChar(char c) {
-        char result = c;
-        result = this.rightRotor.transformLetter(result, "in");
-        result = this.centerRotor.transformLetter(result, "in");
-        result = this.leftRotor.transformLetter(result, "in");
-        result = this.reflector.transformLetter(result, "");
+        int newIndex = this.abcd.indexOf(c);
+        
+        newIndex = this.rightRotor.transformLetter(newIndex, "in");
+        newIndex = this.centerRotor.transformLetter(newIndex, "in");
+        newIndex = this.leftRotor.transformLetter(newIndex, "in");
+        newIndex = this.reflector.transformLetter(newIndex, "");
 
-        result = this.leftRotor.transformLetter(result, "out");
-        result = this.centerRotor.transformLetter(result, "out");
-        result = this.rightRotor.transformLetter(result, "out");
+        newIndex = this.leftRotor.transformLetter(newIndex, "out");
+        newIndex = this.centerRotor.transformLetter(newIndex, "out");
+        newIndex = this.rightRotor.transformLetter(newIndex, "out");
 
+        //Final transformation->index+offset to get the real letter of the output
+        char result = this.abcd.get(newIndex);
+        
         return result;
     }
 
