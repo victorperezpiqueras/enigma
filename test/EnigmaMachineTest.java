@@ -82,6 +82,26 @@ public class EnigmaMachineTest {
         String result = em.enigma(key, "ABCDEFFFF");
         assertEquals(result,"ZKFBIWHUH");
     }
+    
+    @Test
+    public void doblePaso(){
+        //default starting positions:
+        char[] startingPos = {'B', 'D', 'V'};
+        //CREATE KEY:
+        Key key = new Key(this.rotorsConfig, reflector, startingPos);
+        
+        this.em.configurateKey(key);
+        
+        int centerOffset1 = this.em.getCenterRotor().getOffset();
+        
+        String result = em.enigma(key, "PPP");
+        
+        int centerOffset2 = this.em.getCenterRotor().getOffset();
+        //doble paso
+        assertEquals(centerOffset2,centerOffset1+2);
+
+        assertEquals(result,"HUT");
+    }
 
     @Test
     public void configurationKeyWorks() {

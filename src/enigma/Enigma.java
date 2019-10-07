@@ -35,15 +35,25 @@ public class Enigma {
         rotorsConfig.add(r3);
         
         //default starting positions:
-        char[] startingPos = {'Z', 'A', 'A'};
+        char[] startingPos = new char[3];
+        System.out.println("Introduce la clave:");
+        
+        Scanner sc = new Scanner(System.in);
+        String clave = sc.nextLine();
+        clave = clave.toUpperCase();
+        
+        int i=0;
+         for (char c : clave.toCharArray()) {
+            startingPos[i]=c;
+            i++;
+        } 
         
         //CREATE KEY:
         Key key = new Key(rotorsConfig, reflector, startingPos);
         em.configurateKey(key);
         
         //CREATE MSG:
-        System.out.println("Introduce la clave:");
-        Scanner sc = new Scanner(System.in);
+        System.out.println("Introduce el mensaje:");
         String msg = sc.nextLine();
         //upper case
         msg = msg.toUpperCase();

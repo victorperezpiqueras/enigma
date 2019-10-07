@@ -83,7 +83,7 @@ public class EnigmaMachine {
         newIndex = this.rightRotor.transformLetter(newIndex, "in");
         newIndex = this.centerRotor.transformLetter(newIndex, "in");
         newIndex = this.leftRotor.transformLetter(newIndex, "in");
-        newIndex = this.reflector.transformLetter(newIndex, "");
+        newIndex = this.reflector.transformLetter(newIndex, "in");
 
         newIndex = this.leftRotor.transformLetter(newIndex, "out");
         newIndex = this.centerRotor.transformLetter(newIndex, "out");
