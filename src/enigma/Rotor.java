@@ -22,7 +22,6 @@ public class Rotor {
 
     private boolean doblePaso = false;
     private int doblePasoStep = 0;
-    private boolean flagDoblePaso = false;
 
     public Rotor(String type, ArrayList<Character> code, Rotor rotor, int notch) {
         this.code = code;
