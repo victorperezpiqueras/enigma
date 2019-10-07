@@ -9,17 +9,16 @@ import java.util.ArrayList;
 
 /**
  *
- * @author vikti
+ * @author victorperezpiqueras
  */
 public class EnigmaMachine {
-    //private ArrayList<Rotor> rotors = new ArrayList();
 
     private Rotor reflector;
 
     private Rotor leftRotor;
     private Rotor centerRotor;
     private Rotor rightRotor;
-    
+
     private ArrayList<Character> abcd = new ArrayList<Character>();
 
     public EnigmaMachine() {
@@ -48,17 +47,14 @@ public class EnigmaMachine {
 
         //FIND OFFSETS:
         char letter = key.getStartingPos()[0];
-        //int offset = this.leftRotor.getCode().indexOf(letter);
         int offset = this.generateOffset(letter);
         this.leftRotor.setOffset(offset);
 
         letter = key.getStartingPos()[1];
-        //offset = this.centerRotor.getCode().indexOf(letter);
         offset = this.generateOffset(letter);
         this.centerRotor.setOffset(offset);
 
         letter = key.getStartingPos()[2];
-        //offset = this.rightRotor.getCode().indexOf(letter);
         offset = this.generateOffset(letter);
         this.rightRotor.setOffset(offset);
 
@@ -79,7 +75,7 @@ public class EnigmaMachine {
 
     public char transformChar(char c) {
         int newIndex = this.abcd.indexOf(c);
-        
+
         newIndex = this.rightRotor.transformLetter(newIndex, "in");
         newIndex = this.centerRotor.transformLetter(newIndex, "in");
         newIndex = this.leftRotor.transformLetter(newIndex, "in");
@@ -91,7 +87,7 @@ public class EnigmaMachine {
 
         //Final transformation->index+offset to get the real letter of the output
         char result = this.abcd.get(newIndex);
-        
+
         return result;
     }
 

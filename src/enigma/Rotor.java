@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author vikti
+ * @author victorperezpiqueras
  */
 public class Rotor {
 
@@ -20,8 +20,9 @@ public class Rotor {
     private int notch;
     private ArrayList<Character> abcd = new ArrayList<Character>();
 
+    //doble paso:
     private boolean doblePaso = false;
-    private int doblePasoStep = 0;
+    private boolean incremented = false;
 
     public Rotor(String type, ArrayList<Character> code, Rotor rotor, int notch) {
         this.code = code;
@@ -46,7 +47,7 @@ public class Rotor {
         int index;
         char newLetter;
         int newIndex;
-        //mode input
+        //MODE INPUT
         if (mode.contains("in")) {
             //get index of the ABCD and add the offset-->find letter in the table
             //index = (this.abcd.indexOf(letter) + this.offset) % 26;
@@ -55,61 +56,54 @@ public class Rotor {
             newLetter = this.code.get(index);
             newIndex = this.abcd.indexOf(newLetter) + (26 - this.getOffset());
         }//AAY,Z-->17(q) = 16 + ( 26-25(index) ) 
-        //mode output
+        //MODE OUTPUT
         else {
-            //index = (this.code.indexOf(letter) + this.offset) % 26;
-            index = (indexLetter + this.getOffset()) % 26;  //obtenemos la letra en la misma posicion
+            //obtenemos la letra en la misma posicion
+            index = (indexLetter + this.getOffset()) % 26;
             newLetter = this.abcd.get(index);
             //get the letter of the abcd in the Rotor code
             newIndex = this.code.indexOf(newLetter);
-            //newLetter = this.abcd.get(index);
             newLetter = this.abcd.get(newIndex);
             newIndex = this.abcd.indexOf(newLetter) + (26 - this.getOffset());
         }
-        char debugLetter = this.abcd.get(newIndex % 26);
+        char debugIndex = this.abcd.get(newIndex % 26);
         return newIndex % 26;
     }
 
-    /*
-    public void notifyRotor() {
-        
-    }
-     */
-    public void incrementOffset() {/////////////before or after notify the next rotor, which should turn first
+    public void incrementOffset() {
 
-        //increment offset
+        //Rotor 3 -> increment offset
         if (this.type.contains("3")) {
-            this.offset = (this.offset + 1) % 26;
-        }
-        //Doble paso:
-        if (doblePaso) {
-            this.doblePaso = false;
-            this.offset = (this.offset + 1) % 26;
-            this.leftRotor.offset = (this.leftRotor.offset + 1) % 26;
-            //comprobar si el doble paso se ha hecho, no avanzar otra vez el rotor
-            this.doblePasoStep = 1;
+            this.addOffset();
+        } else {
+            //si no ha sido incrementado por el rotor drch y está en la pos. anterior a la muesca->marcar doble paso
+            if (!this.incremented && ((this.offset + 1) % 26) == this.notch) {
+                this.doblePaso = true;
+            }
+            //si toca doble paso->desactivarlo, girar rotor y rotor izq.
+            if (doblePaso) {
+                this.doblePaso = false;
+                this.offset = (this.offset + 1) % 26;
+                //mover rotor izquierdo:
+                this.leftRotor.offset = (this.leftRotor.offset + 1) % 26;
+            }
 
-        } //if max offset and has left rotor->notify left rotor to change
-        else if ((this.offset == this.notch) && (this.leftRotor != null) && (this.doblePasoStep == 0)) {
-            this.leftRotor.offset = (this.leftRotor.offset + 1) % 26;
-            //this.notifyRotor();
-        }
-
-        //Activar doble paso:
-        int nextOffset = (this.offset + 1) % 26;
-        if (this.type.contains("2") && nextOffset == this.notch) {
-            //this.offset = (this.offset + 1) % 26;
-            //this.leftRotor.offset = (this.leftRotor.offset + 1) % 26;
-            this.doblePaso = true;
+            //si ha sido incrementado pero en la siguiente está en pos. anterior a la muesca->marcar doble paso
+            if (this.type.contains("2") && ((this.offset + 1) % 26) == this.notch) {
+                this.doblePaso = true;
+            }
+            //resetear flag para proxima letra
+            this.incremented = false;
         }
 
-        //dps0=>(DOBLE PASO)=>dps1=>no sumar=>dps2=>NEXT LETTER=>dps2=>no sumar=>dps0
-        if (this.doblePasoStep == 1) {
-            this.doblePasoStep = 2;
-        } else if (this.doblePasoStep == 2) {
-            this.doblePasoStep = 0;
-        }
+    }
 
+    public void addOffset() {
+        this.offset = (this.offset + 1) % 26;
+        this.incremented = true;
+        if (this.offset == this.notch && this.leftRotor != null) {
+            this.leftRotor.addOffset();
+        }
     }
 
     public Rotor getLeftRotor() {

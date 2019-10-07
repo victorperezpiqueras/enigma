@@ -7,16 +7,13 @@
 import enigma.EnigmaMachine;
 import enigma.Rotor;
 import java.util.ArrayList;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
  *
- * @author 48259328
+ * @author victorperezpiqueras
  */
 public class RotorTest {
 
@@ -44,7 +41,6 @@ public class RotorTest {
     @Test
     public void transformLetter() {
         //System.out.println("-----------------");
-        char input = 'A';
         r3.setOffset(25);
         int oldOffset = r3.getOffset();
         int outputIndex = r3.transformLetter(0, "in");
@@ -82,24 +78,19 @@ public class RotorTest {
             r3.transformLetter(0, "in");
         }
         int finalOffset = r2.getOffset();
-
         //System.out.println("initialOffset: " + initialOffset);
         //System.out.println("finalOffset: " + finalOffset);
         assertEquals(initialOffset + 1, finalOffset);
-
     }
-    
+
     @Test
     public void checkNotchWorks() {
         //System.out.println("-----------------");
         r3.setOffset(0);
         int initialOffset = r2.getOffset();
         r3.setNotch(1);
-
         r3.transformLetter(0, "in");
-        
         int finalOffset = r2.getOffset();
-
         //System.out.println("initialOffset: " + initialOffset);
         //System.out.println("finalOffset: " + finalOffset);
         assertEquals(initialOffset + 1, finalOffset);

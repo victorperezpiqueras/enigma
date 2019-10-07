@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author vikti
+ * @author victorperezpiqueras
  */
 public class Enigma {
 
@@ -28,36 +28,36 @@ public class Enigma {
         Rotor reflector = em.generateRotor("reflector", "YRUHQSLDPXNGOKMIEBFZCWVJAT", null, 0);
 
         ArrayList<Rotor> rotorsConfig = new ArrayList();
-        
+
         //default config:
         rotorsConfig.add(r1);
         rotorsConfig.add(r2);
         rotorsConfig.add(r3);
-        
+
         //default starting positions:
         char[] startingPos = new char[3];
         System.out.println("Introduce la clave:");
-        
+
         Scanner sc = new Scanner(System.in);
         String clave = sc.nextLine();
         clave = clave.toUpperCase();
-        
-        int i=0;
-         for (char c : clave.toCharArray()) {
-            startingPos[i]=c;
+
+        int i = 0;
+        for (char c : clave.toCharArray()) {
+            startingPos[i] = c;
             i++;
-        } 
-        
+        }
+
         //CREATE KEY:
         Key key = new Key(rotorsConfig, reflector, startingPos);
         em.configurateKey(key);
-        
+
         //CREATE MSG:
         System.out.println("Introduce el mensaje:");
         String msg = sc.nextLine();
         //upper case
         msg = msg.toUpperCase();
-        
+
         //EXECUTE ENIGMA:
         String result = em.enigma(key, msg);
 

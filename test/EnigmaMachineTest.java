@@ -8,16 +8,13 @@ import enigma.EnigmaMachine;
 import enigma.Key;
 import enigma.Rotor;
 import java.util.ArrayList;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
  *
- * @author 48259328
+ * @author victorperezpiqueras
  */
 public class EnigmaMachineTest {
 
@@ -38,69 +35,82 @@ public class EnigmaMachineTest {
         r2 = em.generateRotor("2", "AJDKSIRUXBLHWTMCQGZNPYFVOE", r1, 5);
         r3 = em.generateRotor("3", "BDFHJLCPRTXVZNYEIWGAKMUSQO", r2, 22);
         reflector = em.generateRotor("reflector", "YRUHQSLDPXNGOKMIEBFZCWVJAT", null, 0);
-        
+
         this.rotorsConfig.add(r1);
         this.rotorsConfig.add(r2);
         this.rotorsConfig.add(r3);
-       
+
     }
-    
+
     @Test
-    public void test1(){
+    public void test1() {
         //default starting positions:
         char[] startingPos = {'Z', 'A', 'A'};
         //CREATE KEY:
         Key key = new Key(this.rotorsConfig, reflector, startingPos);
-        
+
         this.em.configurateKey(key);
         String result = em.enigma(key, "A");
-        assertEquals(result,"Z");
+        assertEquals("Z", result);
     }
-    
+
     @Test
-    public void test2(){
+    public void test2() {
         //default starting positions:
         char[] startingPos = {'A', 'A', 'Z'};
         //CREATE KEY:
         Key key = new Key(this.rotorsConfig, reflector, startingPos);
-        
+
         this.em.configurateKey(key);
         String result = em.enigma(key, "A");
-        assertEquals(result,"U");
+        assertEquals("U", result);
         result = em.enigma(key, "U");
-        assertEquals(result,"A");
+        assertEquals("A", result);
     }
-    
+
     @Test
-    public void test3(){
+    public void test3() {
         //default starting positions:
         char[] startingPos = {'Z', 'A', 'A'};
         //CREATE KEY:
         Key key = new Key(this.rotorsConfig, reflector, startingPos);
-        
+
         this.em.configurateKey(key);
         String result = em.enigma(key, "ABCDEFFFF");
-        assertEquals(result,"ZKFBIWHUH");
+        assertEquals("ZKFBIWHUH", result);
     }
-    
+
+    //TEST DE DOBLE PASO:
     @Test
-    public void doblePaso(){
+    public void test4() {
+        //default starting positions:
+        char[] startingPos = {'R', 'E', 'D'};
+        //CREATE KEY:
+        Key key = new Key(this.rotorsConfig, reflector, startingPos);
+
+        this.em.configurateKey(key);
+        String result = em.enigma(key, "A");
+        assertEquals("D", result);
+    }
+
+    @Test
+    public void doblePaso() {
         //default starting positions:
         char[] startingPos = {'B', 'D', 'V'};
         //CREATE KEY:
         Key key = new Key(this.rotorsConfig, reflector, startingPos);
-        
+
         this.em.configurateKey(key);
-        
+
         int centerOffset1 = this.em.getCenterRotor().getOffset();
-        
+
         String result = em.enigma(key, "PPP");
-        
+
         int centerOffset2 = this.em.getCenterRotor().getOffset();
         //doble paso
-        assertEquals(centerOffset2,centerOffset1+2);
+        assertEquals(centerOffset2, centerOffset1 + 2);
 
-        assertEquals(result,"HUT");
+        assertEquals("HUT", result);
     }
 
     @Test
@@ -121,5 +131,5 @@ public class EnigmaMachineTest {
         assertEquals(r2.getOffset(), 0);
         assertEquals(r3.getOffset(), 25);
     }
-    
+
 }
