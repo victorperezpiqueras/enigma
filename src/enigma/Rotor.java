@@ -75,7 +75,7 @@ public class Rotor {
         //Rotor 3 -> increment offset
         if (this.type.contains("3")) {
             this.addOffset();
-        } else {
+        } else if(this.type.contains("2")){
             //si no ha sido incrementado por el rotor drch y está en la pos. anterior a la muesca->marcar doble paso
             if (!this.incremented && ((this.offset + 1) % 26) == this.notch) {
                 this.doblePaso = true;
@@ -93,8 +93,9 @@ public class Rotor {
                 this.doblePaso = true;
             }
             //resetear flag para proxima letra
-            this.incremented = false;
+            
         }
+        this.incremented = false;
 
     }
 

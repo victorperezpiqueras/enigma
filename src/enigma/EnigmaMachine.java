@@ -19,6 +19,8 @@ public class EnigmaMachine {
     private Rotor centerRotor;
     private Rotor rightRotor;
 
+    private ArrayList<Stecker> steckers = new ArrayList<Stecker>();;
+
     private ArrayList<Character> abcd = new ArrayList<Character>();
 
     public EnigmaMachine() {
@@ -60,6 +62,32 @@ public class EnigmaMachine {
 
     }
 
+    public int configurateSteckers(ArrayList<Stecker> steckers) {
+        ArrayList<Character> abcdIn = (ArrayList<Character>) this.abcd.clone();
+        ArrayList<Character> abcdOut = (ArrayList<Character>) this.abcd.clone();
+
+        for (Stecker s : steckers) {
+            if (abcdIn.contains(s.getIn()) && abcdOut.contains(s.getOut())) {              
+                abcdIn.remove( (Object)s.getIn() );
+                abcdOut.remove( (Object)s.getOut() );
+                this.steckers.add(s);
+            } else {
+                return -1;
+            }
+
+        }
+        return 0;
+    }
+
+    public char transformStecker(char c) {
+        for (Stecker s : this.steckers) {
+            if (s.getIn() == c) {
+                return s.getOut();
+            }
+        }
+        return c;
+    }
+
     //gets the index of the letter to generate its offset-->A=0;C=2
     public int generateOffset(char letter) {
         ArrayList<Character> chars = new ArrayList<Character>();
@@ -74,7 +102,9 @@ public class EnigmaMachine {
     }
 
     public char transformChar(char c) {
-        int newIndex = this.abcd.indexOf(c);
+        //transform stecker:
+        char input = this.transformStecker(c);
+        int newIndex = this.abcd.indexOf(input);
 
         newIndex = this.rightRotor.transformLetter(newIndex, "in");
         newIndex = this.centerRotor.transformLetter(newIndex, "in");
@@ -87,6 +117,10 @@ public class EnigmaMachine {
 
         //Final transformation->index+offset to get the real letter of the output
         char result = this.abcd.get(newIndex);
+        
+        //transform stecker:
+        result = this.transformStecker(result);
+        
 
         return result;
     }

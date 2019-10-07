@@ -5,6 +5,9 @@
  */
 package enigma;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,7 +20,7 @@ public class Enigma {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         //CREATE ENIGMA MACHINE:
         EnigmaMachine em = new EnigmaMachine();
 
@@ -39,7 +42,8 @@ public class Enigma {
         System.out.println("Introduce la clave:");
 
         Scanner sc = new Scanner(System.in);
-        String clave = sc.nextLine();
+        BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+        String clave = input.readLine();
         clave = clave.toUpperCase();
 
         int i = 0;
@@ -52,9 +56,28 @@ public class Enigma {
         Key key = new Key(rotorsConfig, reflector, startingPos);
         em.configurateKey(key);
 
+        //CREATE STECKERS:
+        ArrayList<Stecker> steckers = new ArrayList();
+        System.out.println("Introduce el número de steckers:");
+        int numSteckers = Integer.parseInt(input.readLine());
+        
+        System.out.println("Introduce los steckers con el formato: XX");
+        for (i = 0; i < numSteckers; i++) {
+            System.out.println("Stecker[" + i + "]:");
+            String steckerText = input.readLine();
+            steckerText = steckerText.toUpperCase();
+            Stecker st = new Stecker(steckerText);
+            steckers.add(st);
+        }
+        
+        int err = em.configurateSteckers(steckers);
+        if (err == -1) {
+            System.exit(-1);
+        }
+        
         //CREATE MSG:
         System.out.println("Introduce el mensaje:");
-        String msg = sc.nextLine();
+        String msg = input.readLine();
         //upper case
         msg = msg.toUpperCase();
 
