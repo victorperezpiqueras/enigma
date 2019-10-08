@@ -79,10 +79,14 @@ public class EnigmaMachine {
         return 0;
     }
 
+    //swaps the letter if it is in one of the letters of the stecker
     public char transformStecker(char c) {
         for (Stecker s : this.steckers) {
             if (s.getIn() == c) {
                 return s.getOut();
+            }
+            else if (s.getOut() == c) {
+                return s.getIn();//////////////////////////////////////////////////////
             }
         }
         return c;
