@@ -7,6 +7,7 @@
 import enigma.EnigmaMachine;
 import enigma.Key;
 import enigma.Rotor;
+import enigma.Stecker;
 import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
@@ -49,7 +50,6 @@ public class EnigmaMachineTest {
         //CREATE KEY:
         Key key = new Key(this.rotorsConfig, reflector, startingPos);
 
-        this.em.configurateKey(key);
         String result = em.enigma(key, "A");
         assertEquals("Z", result);
     }
@@ -61,7 +61,6 @@ public class EnigmaMachineTest {
         //CREATE KEY:
         Key key = new Key(this.rotorsConfig, reflector, startingPos);
 
-        this.em.configurateKey(key);
         String result = em.enigma(key, "A");
         assertEquals("U", result);
         result = em.enigma(key, "U");
@@ -75,7 +74,6 @@ public class EnigmaMachineTest {
         //CREATE KEY:
         Key key = new Key(this.rotorsConfig, reflector, startingPos);
 
-        this.em.configurateKey(key);
         String result = em.enigma(key, "ABCDEFFFF");
         assertEquals("ZKFBIWHUH", result);
     }
@@ -88,9 +86,21 @@ public class EnigmaMachineTest {
         //CREATE KEY:
         Key key = new Key(this.rotorsConfig, reflector, startingPos);
 
-        this.em.configurateKey(key);
         String result = em.enigma(key, "A");
         assertEquals("D", result);
+    }
+    
+    @Test
+    public void steckersWorking() {
+        char[] startingPos = {'A', 'A', 'Z'};
+        Key key = new Key(this.rotorsConfig, reflector, startingPos);
+        ArrayList<Stecker> steckers = new ArrayList();
+        steckers.add(new Stecker('A','B'));
+        steckers.add(new Stecker('E','L'));
+        em.configurateSteckers(steckers);
+        //A->B -- E->L
+        String result = em.enigma(key, "A");
+        assertEquals("L", result);
     }
 
     @Test
@@ -98,10 +108,8 @@ public class EnigmaMachineTest {
         //default starting positions:
         char[] startingPos = {'B', 'D', 'V'};
         //CREATE KEY:
-        Key key = new Key(this.rotorsConfig, reflector, startingPos);
-
+        Key key = new Key(this.rotorsConfig, reflector, startingPos); 
         this.em.configurateKey(key);
-
         int centerOffset1 = this.em.getCenterRotor().getOffset();
 
         String result = em.enigma(key, "PPP");
