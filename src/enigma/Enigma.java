@@ -41,7 +41,6 @@ public class Enigma {
         char[] startingPos = new char[3];
         System.out.println("Introduce la clave:");
 
-        Scanner sc = new Scanner(System.in);
         BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
         String clave = input.readLine();
         clave = clave.toUpperCase();

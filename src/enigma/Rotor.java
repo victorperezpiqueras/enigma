@@ -89,7 +89,7 @@ public class Rotor {
             }
 
             //si ha sido incrementado pero en la siguiente está en pos. anterior a la muesca->marcar doble paso
-            if (this.type.contains("2") && ((this.offset + 1) % 26) == this.notch) {
+            if (((this.offset + 1) % 26) == this.notch) {
                 this.doblePaso = true;
             }
             //resetear flag para proxima letra

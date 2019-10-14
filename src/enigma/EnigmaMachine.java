@@ -86,7 +86,7 @@ public class EnigmaMachine {
                 return s.getOut();
             }
             else if (s.getOut() == c) {
-                return s.getIn();//////////////////////////////////////////////////////
+                return s.getIn();
             }
         }
         return c;
@@ -94,7 +94,6 @@ public class EnigmaMachine {
 
     //gets the index of the letter to generate its offset-->A=0;C=2
     public int generateOffset(char letter) {
-        ArrayList<Character> chars = new ArrayList<Character>();
         int offset = 0;
         for (char c : "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray()) {
             if (c == letter) {
