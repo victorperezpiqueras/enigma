@@ -76,8 +76,13 @@ public class BruteForce {
         //System.out.println(this.dict);
     }
 
-    public boolean findInDictionary(String result) {
-        return this.dict.contains(result);
+    public boolean findInDictionary(String result) {//for each in dict if contains
+        for(String d : this.dict){
+            if(result.contains(d)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void executeBruteForce(String msg) {
