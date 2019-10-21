@@ -95,7 +95,7 @@ public class BruteForce {
 
         //variables to save the matches:
         ArrayList<String> results = new ArrayList();
-        ArrayList<Key> keys = new ArrayList();
+        ArrayList keys = new ArrayList();
 
         boolean noSteckers = true;
         //loop:
@@ -137,7 +137,7 @@ public class BruteForce {
                                 //System.out.println("FOUND: " + result);
                                 if (!results.contains(result)) {
                                     results.add(result);
-                                    keys.add(key);
+                                    keys.add(this.key.getStartingPos());
                                 }
 
                             }
