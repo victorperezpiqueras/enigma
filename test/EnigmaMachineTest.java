@@ -25,6 +25,7 @@ public class EnigmaMachineTest {
     Rotor r3;
     Rotor reflector;
     ArrayList<Rotor> rotorsConfig = new ArrayList();
+    ArrayList<Stecker> steckers = new ArrayList<Stecker>();
 
     public EnigmaMachineTest() {
     }
@@ -48,7 +49,7 @@ public class EnigmaMachineTest {
         //default starting positions:
         char[] startingPos = {'Z', 'A', 'A'};
         //CREATE KEY:
-        Key key = new Key(this.rotorsConfig, reflector, startingPos);
+        Key key = new Key(this.rotorsConfig, reflector, startingPos, this.steckers);
 
         String result = em.enigma(key, "A");
         assertEquals("Z", result);
@@ -59,7 +60,7 @@ public class EnigmaMachineTest {
         //default starting positions:
         char[] startingPos = {'A', 'A', 'Z'};
         //CREATE KEY:
-        Key key = new Key(this.rotorsConfig, reflector, startingPos);
+        Key key = new Key(this.rotorsConfig, reflector, startingPos, this.steckers);
 
         String result = em.enigma(key, "A");
         assertEquals("U", result);
@@ -72,7 +73,7 @@ public class EnigmaMachineTest {
         //default starting positions:
         char[] startingPos = {'Z', 'A', 'A'};
         //CREATE KEY:
-        Key key = new Key(this.rotorsConfig, reflector, startingPos);
+        Key key = new Key(this.rotorsConfig, reflector, startingPos, this.steckers);
 
         String result = em.enigma(key, "ABCDEFFFF");
         assertEquals("ZKFBIWHUH", result);
@@ -84,7 +85,7 @@ public class EnigmaMachineTest {
         //default starting positions:
         char[] startingPos = {'R', 'E', 'D'};
         //CREATE KEY:
-        Key key = new Key(this.rotorsConfig, reflector, startingPos);
+        Key key = new Key(this.rotorsConfig, reflector, startingPos, this.steckers);
 
         String result = em.enigma(key, "A");
         assertEquals("D", result);
@@ -93,11 +94,10 @@ public class EnigmaMachineTest {
     @Test
     public void steckersWorking() {
         char[] startingPos = {'A', 'A', 'Z'};
-        Key key = new Key(this.rotorsConfig, reflector, startingPos);
         ArrayList<Stecker> steckers = new ArrayList();
         steckers.add(new Stecker('A','B'));
         steckers.add(new Stecker('E','L'));
-        em.configurateSteckers(steckers);
+        Key key = new Key(this.rotorsConfig, reflector, startingPos, steckers);
         //A->B -- E->L
         String result = em.enigma(key, "A");
         assertEquals("L", result);
@@ -108,7 +108,7 @@ public class EnigmaMachineTest {
         //default starting positions:
         char[] startingPos = {'B', 'D', 'V'};
         //CREATE KEY:
-        Key key = new Key(this.rotorsConfig, reflector, startingPos); 
+        Key key = new Key(this.rotorsConfig, reflector, startingPos, this.steckers); 
         this.em.configurateKey(key);
         int centerOffset1 = this.em.getCenterRotor().getOffset();
 
@@ -131,7 +131,7 @@ public class EnigmaMachineTest {
         //default starting positions:
         char[] startingPos = {'Z', 'A', 'Z'};
         //CREATE KEY:
-        Key key = new Key(this.rotorsConfig, reflector, startingPos);
+        Key key = new Key(this.rotorsConfig, reflector, startingPos, this.steckers);
 
         this.em.configurateKey(key);
         //System.out.println("Expected offsets:[0,3,25]. Actual offsets:["+r1.getOffset()+"]"+"["+r2.getOffset()+"]"+"["+r3.getOffset()+"]");

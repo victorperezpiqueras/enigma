@@ -51,15 +51,11 @@ public class Enigma {
             i++;
         }
 
-        //CREATE KEY:
-        Key key = new Key(rotorsConfig, reflector, startingPos);
-        em.configurateKey(key);
-
         //CREATE STECKERS:
         ArrayList<Stecker> steckers = new ArrayList();
         System.out.println("Introduce el número de steckers:");
         int numSteckers = Integer.parseInt(input.readLine());
-        
+
         System.out.println("Introduce los steckers con el formato: XX");
         for (i = 0; i < numSteckers; i++) {
             System.out.println("Stecker[" + i + "]:");
@@ -67,25 +63,32 @@ public class Enigma {
             steckerText = steckerText.toUpperCase();
             Stecker st = new Stecker(steckerText);
             steckers.add(st);
-        }
-        
-        int err = em.configurateSteckers(steckers);
+
+            /*int err = em.configurateSteckers(steckers);
         if (err == -1) {
-            System.exit(-1);
+            System.exit(-1);*/
         }
-        
+        //CREATE KEY:
+        Key key = new Key(rotorsConfig, reflector, startingPos, steckers);
+
         //CREATE MSG:
         System.out.println("Introduce el mensaje:");
         String msg = input.readLine();
         //upper case
         msg = msg.toUpperCase();
 
+        long startTime = System.nanoTime();
         //EXECUTE ENIGMA:
         String result = em.enigma(key, msg);
+
+        long stopTime = System.nanoTime();
 
         //PRINT OUTPUT:
         System.out.println("Output:");
         System.out.println(result);
+        
+        System.out.println("Time elapsed: "+(stopTime - startTime));
+
     }
 
 }

@@ -27,7 +27,6 @@ public class Stecker {
         this.in = s.charAt(0);
         this.out = s.charAt(1);
     }
-    
 
     //GETTERS AND SETTERS
     public char getIn() {
@@ -44,6 +43,11 @@ public class Stecker {
 
     public void setOut(char out) {
         this.out = out;
+    }
+
+    @Override
+    public String toString() {
+        return "{"+this.in+this.out+"}";
     }
 
 }

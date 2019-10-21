@@ -19,7 +19,7 @@ public class EnigmaMachine {
     private Rotor centerRotor;
     private Rotor rightRotor;
 
-    private ArrayList<Stecker> steckers = new ArrayList<Stecker>();;
+    private ArrayList<Stecker> steckers = new ArrayList<Stecker>();
 
     private ArrayList<Character> abcd = new ArrayList<Character>();
 
@@ -28,6 +28,10 @@ public class EnigmaMachine {
             this.abcd.add(c);
         }
 
+    }
+    
+    public void configurateDefaultEnigma(){
+        
     }
 
     public Rotor generateRotor(String type, String encoding, Rotor leftRotor, int notch) {
@@ -40,6 +44,8 @@ public class EnigmaMachine {
     }
 
     public void configurateKey(Key key) {
+        //this.steckers=key.getSteckers();
+        this.configurateSteckers(key.getSteckers());
 
         //DEFAULT CONFIG:
         this.setReflector(key.getReflector());
