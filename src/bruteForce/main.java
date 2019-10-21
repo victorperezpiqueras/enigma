@@ -5,9 +5,10 @@
  */
 package bruteForce;
 
+
 /**
  *
- * @author vikti
+ * @author victorperezpiqueras
  */
 public class main {
 
@@ -15,10 +16,11 @@ public class main {
         BruteForce bF = new BruteForce();
         bF.configurateDefaultEnigma();
         bF.fillDictionary();
-        bF.executeBruteForce("KHIVQBTCYRFAFWPLVSCAMMRFVDMSIIRRTRZTLAOMWHFQDTOFARWZYVPWPZBNKWAV");
-        //bF.executeBruteForce("GBZZFO");
+        String message = "KHIVQBTCYRFAFWPLVSCAMMRFVDMSIIRRTRZTLAOMWHFQDTOFARWZYVPWPZBNKWAV";
+        //String message = "VUNCRIHV";
+        bF.executeBruteForce(message);
 
-        
+
     }
 
 }

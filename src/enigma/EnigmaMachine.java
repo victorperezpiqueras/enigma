@@ -29,9 +29,9 @@ public class EnigmaMachine {
         }
 
     }
-    
-    public void configurateDefaultEnigma(){
-        
+
+    public void configurateDefaultEnigma() {
+
     }
 
     public Rotor generateRotor(String type, String encoding, Rotor leftRotor, int notch) {
@@ -69,10 +69,10 @@ public class EnigmaMachine {
     }
 
     public int configurateSteckers(ArrayList<Stecker> steckers) {
-        ArrayList<Character> abcdIn = (ArrayList<Character>) this.abcd.clone();
+       /* ArrayList<Character> abcdIn = (ArrayList<Character>) this.abcd.clone();
         ArrayList<Character> abcdOut = (ArrayList<Character>) this.abcd.clone();
 
-        for (Stecker s : steckers) {
+          for (Stecker s : steckers) {
             if (abcdIn.contains(s.getIn()) && abcdOut.contains(s.getOut())) {              
                 abcdIn.remove( (Object)s.getIn() );
                 abcdOut.remove( (Object)s.getOut() );
@@ -81,7 +81,11 @@ public class EnigmaMachine {
                 return -1;
             }
 
+        }*/
+        for (Stecker s : steckers) {
+            this.steckers.add(s);
         }
+
         return 0;
     }
 
@@ -90,8 +94,7 @@ public class EnigmaMachine {
         for (Stecker s : this.steckers) {
             if (s.getIn() == c) {
                 return s.getOut();
-            }
-            else if (s.getOut() == c) {
+            } else if (s.getOut() == c) {
                 return s.getIn();
             }
         }
@@ -126,10 +129,9 @@ public class EnigmaMachine {
 
         //Final transformation->index+offset to get the real letter of the output
         char result = this.abcd.get(newIndex);
-        
+
         //transform stecker:
         result = this.transformStecker(result);
-        
 
         return result;
     }

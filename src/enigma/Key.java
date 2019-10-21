@@ -17,6 +17,10 @@ public class Key {
     private Rotor reflector;
     private char[] startingPos = new char[3];
     private ArrayList<Stecker> steckers = new ArrayList<Stecker>();
+    
+    public Key(){
+        
+    }
 
     public Key(ArrayList<Rotor> rotors, Rotor reflector, char[] startingPos, ArrayList<Stecker> steckers) {
         this.rotors = rotors;

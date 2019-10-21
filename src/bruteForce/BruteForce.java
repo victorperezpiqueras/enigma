@@ -10,18 +10,20 @@ import java.util.ArrayList;
 
 /**
  *
- * @author vikti
+ * @author victorperezpiqueras
  */
 public class BruteForce {
 
     //static elements:
     private EnigmaMachine em = new EnigmaMachine();
-    private String msg = "KHIVQBTCYRFAFWPLVSCAMMRFVDMSIIRRTRZTLAOMWHFQDTOFARWZYVPWPZBNKWAV";
+    private ArrayList<Rotor> rotors = new ArrayList();
+    private Rotor reflector;
+    //private String msg = "KHIVQBTCYRFAFWPLVSCAMMRFVDMSIIRRTRZTLAOMWHFQDTOFARWZYVPWPZBNKWAV";
     private Key key;
 
     private ArrayList<String> dict = new ArrayList();
     //variable elements
-    private char[] startingPos;
+    private char[] startingPos = new char[3];
     private ArrayList<Stecker> steckers = new ArrayList<Stecker>();
 
     int numOfAttempts = 0;
@@ -32,10 +34,10 @@ public class BruteForce {
 
     public void configurateDefaultEnigma() {
         //ROTORS:
+        this.reflector = em.generateRotor("reflector", "YRUHQSLDPXNGOKMIEBFZCWVJAT", null, 0);
         Rotor r1 = em.generateRotor("1", "EKMFLGDQVZNTOWYHXUSPAIBRCJ", null, 17);
         Rotor r2 = em.generateRotor("2", "AJDKSIRUXBLHWTMCQGZNPYFVOE", r1, 5);
         Rotor r3 = em.generateRotor("3", "BDFHJLCPRTXVZNYEIWGAKMUSQO", r2, 22);
-        Rotor reflector = em.generateRotor("reflector", "YRUHQSLDPXNGOKMIEBFZCWVJAT", null, 0);
 
         ArrayList<Rotor> rotorsConfig = new ArrayList();
 
@@ -43,9 +45,10 @@ public class BruteForce {
         rotorsConfig.add(r1);
         rotorsConfig.add(r2);
         rotorsConfig.add(r3);
-
+        this.rotors.addAll(rotorsConfig);
         //configurate key:
-        this.key = new Key(rotorsConfig, reflector, null, null);
+        this.key = new Key();
+
     }
 
     public void fillDictionary() {
@@ -70,6 +73,7 @@ public class BruteForce {
         this.dict.add("albacete".toUpperCase());
         this.dict.add("fiesta".toUpperCase());
         this.dict.add("patata".toUpperCase());
+        //System.out.println(this.dict);
     }
 
     public boolean findInDictionary(String result) {
@@ -78,55 +82,65 @@ public class BruteForce {
 
     public void executeBruteForce(String msg) {
         //initialize variables to use:
-        this.msg = msg;
         ArrayList<Character> abcd = new ArrayList<Character>();
 
-        for (char c : "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray()) {
-            abcd.add(c);
-        }
+        abcd = this.generateAlphabet();
+
         String result = "";
 
         //variables to save the matches:
         ArrayList<String> results = new ArrayList();
         ArrayList<Key> keys = new ArrayList();
 
+        boolean noSteckers = true;
         //loop:
-        outerloop:
         for (char c1 : abcd) {
-            System.out.println(this.numOfAttempts);
+            //System.out.println(this.numOfAttempts);
             for (char c2 : abcd) {
+                //System.out.println(c1 + "" + c2);
                 for (char c3 : abcd) {
-                    System.out.println("Key: "+c1+c2+c3);
-                    /* for (char stecker1 : abcd) {
-                        for (char stecker2 : abcd) {*/
-                    for (int i = 0; i < abcd.size(); i++) {
-                        for (int j = i + 1; j < abcd.size(); j++) {
-                            //if (abcd.get(i) != abcd.get(j)) {
-                                //apply configuration:
-                                this.startingPos = new char[]{c1, c2, c3};
-                                this.key.setStartingPos(this.startingPos);
-                                this.steckers.add(new Stecker(abcd.get(i), abcd.get(j)));
-                                this.key.setSteckers(this.steckers);
+                    System.out.println("Key: " + c1 + c2 + c3);
+                    noSteckers = true;
+                    for (char s1 : abcd) {
+                        for (char s2 : abcd) {
+                            //reset Key configuration:
+                            this.key.setReflector(this.reflector);
+                            this.key.setRotors(this.rotors);
 
-                                //execute enigma:
-                                result = this.em.enigma(this.key, this.msg);
-                                this.numOfAttempts++;
-                                //System.out.println(result);
+                            this.startingPos = new char[]{c1, c2, c3};
+                            this.key.setStartingPos(this.startingPos);
 
-                                //add found config:
-                                if (this.findInDictionary(result)) {
-                                    System.out.println("FOUND: " + result);
+                            //reset stecker:
+                            this.steckers.clear();
+                            //if first stecker that doesnt affect--> AA or GG-> avoid
+                            if (s1 == s2 && noSteckers) {
+                                noSteckers = false;
+                            }//then avoid repeated stecker pairs
+                            else if (s1 != s2) {
+                                this.steckers.add(new Stecker(s1, s2));
+                            }
+                            this.key.setSteckers(this.steckers);
+
+                            //execute enigma:
+                            this.em = new EnigmaMachine();
+                            result = this.em.enigma(this.key, msg);
+                            this.numOfAttempts++;
+                            //System.out.println(result);
+
+                            //add found config:
+                            if (this.findInDictionary(result)) {
+                                //System.out.println("FOUND: " + result);
+                                if (!results.contains(result)) {
                                     results.add(result);
                                     keys.add(key);
-                                    //break outerloop;
                                 }
-                            //}
+
+                            }
                         }
-                        
+
                     }
-                    
+
                 }
-                //System.gc();
             }
 
         }
@@ -146,6 +160,14 @@ public class BruteForce {
             System.out.println("No match found");
         }
 
+    }
+
+    public ArrayList<Character> generateAlphabet() {
+        ArrayList<Character> abcd = new ArrayList();
+        for (char c : "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray()) {
+            abcd.add(c);
+        }
+        return abcd;
     }
 
 }
