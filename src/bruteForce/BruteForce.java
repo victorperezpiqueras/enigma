@@ -73,12 +73,11 @@ public class BruteForce {
         this.dict.add("albacete".toUpperCase());
         this.dict.add("fiesta".toUpperCase());
         this.dict.add("patata".toUpperCase());
-        //System.out.println(this.dict);
     }
 
     public boolean findInDictionary(String result) {//for each in dict if contains
-        for(String d : this.dict){
-            if(result.contains(d)){
+        for (String d : this.dict) {
+            if (result.contains(d)) {
                 return true;
             }
         }
@@ -133,23 +132,26 @@ public class BruteForce {
                             //System.out.println(result);
 
                             //add found config:
-                            if (this.findInDictionary(result)) {                               
+                            if (this.findInDictionary(result)) {
                                 if (!results.contains(result)) {
                                     results.add(result);
-                                    Key k = new Key(this.key.getRotors(),this.key.getReflector(),this.key.getStartingPos(),this.key.getSteckers());
+
+                                    ArrayList<Stecker> as = new ArrayList();
+                                    if (!this.key.getSteckers().isEmpty()) {
+                                        Stecker s = new Stecker(this.key.getSteckers().get(0).getIn(), this.key.getSteckers().get(0).getOut());
+                                        as.add(s);
+                                    }
+                                    Key k = new Key(this.key.getRotors(), this.key.getReflector(), this.key.getStartingPos(), as);
+
                                     keys.add(k);
                                     System.out.println("FOUND: " + result);
                                     System.out.println(k);
                                 }
-
                             }
                         }
-
                     }
-
                 }
             }
-
         }
 
         System.out.println("===========================");
@@ -161,7 +163,6 @@ public class BruteForce {
                 System.out.println(results.get(i));
                 System.out.println(keys.get(i));
             }
-            //System.out.println(this.key.toString());
 
         } else {
             System.out.println("No match found");
