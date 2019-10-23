@@ -47,7 +47,7 @@ public class Stecker {
 
     @Override
     public String toString() {
-        return "{"+this.in+this.out+"}";
+        return "{"+this.in+""+this.out+"}";
     }
 
 }

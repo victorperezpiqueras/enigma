@@ -63,12 +63,12 @@ public class Key {
 
     @Override
     public String toString() {
-        String print="[STECKERS]: ";
+        String print="[KEY]: {"+this.startingPos[0]+this.startingPos[1]+this.startingPos[2]+"}";
+        print+=" | ";
+        print+="[STECKERS]: ";
         for(Stecker s : this.steckers){
             print+=s.toString();
         }
-        print+=" | ";
-        print+="[KEY]: {"+this.startingPos[0]+this.startingPos[1]+this.startingPos[2]+"}";
         return print;
     }
 
